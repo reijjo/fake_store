@@ -1,6 +1,9 @@
 import { Cart, CartProduct } from "@/utils/types";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL =
+  process.env.NODE_ENV === "development"
+    ? process.env.NEXT_PUBLIC_API_URL
+    : process.env.NEXT_PUBLIC_DEPLOYMENT_URL;
 
 export const getCart = async (): Promise<Cart> => {
   try {

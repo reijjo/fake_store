@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "build-dev": "npm install && npm run dev",
-    "dev": "next dev",
+    "dev": "NODE_ENV=development next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production next start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.1.0",
