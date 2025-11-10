@@ -1,0 +1,77 @@
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+  padding-block: 2rem;
+
+  border-bottom: 1px solid black;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 0.5rem;
+  text-wrap: balance;
+}
+
+.cart-item-title {
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  & > button {
+    width: max-content;
+    padding: 0.25rem 0.75rem;
+  }
+}
+
+.cart-buttons {
+  display: flex;
+  margin-left: auto;
+
+  & > button {
+    width: max-content;
+    padding: 0.25rem 0.75rem;
+  }
+}
+
+.confirm-delete {
+  width: 90%;
+  max-width: 500px;
+  text-wrap: balance;
+  text-align: center;
+  margin-top: 10rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 0.5rem;
+  padding: 1rem 2rem;
+  box-shadow: var(--shadow-m);
+
+  /* Only apply flex when popover is open */
+  &:popover-open {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-self: center;
+  }
+}
+
+.delete-item-buttons {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+}
