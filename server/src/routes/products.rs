@@ -20,7 +20,6 @@ async fn get_products(
 ) -> Result<Json<Vec<Product>>, (StatusCode, Json<serde_json::Value>)> {
 	let response = match state.http_client
 		.get("https://fakestoreapi.com/products")
-		.header("User-Agent", "rust-axum-client")
 		.send()
 		.await
 	{
