@@ -20,6 +20,9 @@ async fn get_products(
 ) -> Result<Json<Vec<Product>>, (StatusCode, Json<serde_json::Value>)> {
 	let response = match state.http_client
 		.get("https://fakestoreapi.com/products")
+		.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+		.header("Accept", "application/json,text/html")
+		.header("Accept-Language", "en-US,en;q=0.9")
 		.send()
 		.await
 	{
