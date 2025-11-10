@@ -45,7 +45,7 @@ async fn add_to_cart(
 	Json(cart_product): Json<CartProduct>
 ) -> Result<Json<Cart>, (StatusCode, Json<serde_json::Value>)> {
 	let CartProduct { product, quantity } = &cart_product;
-	let Product { id, title, price, description, category, image } = product;
+	let Product { id, title, price, description, category, image, rating: _ } = product;
 
 	if *id == 0 || title.is_empty() || *price <= 0.0 || description.is_empty() ||
 		 category.is_empty() || image.is_empty() || *quantity <= 0 {
