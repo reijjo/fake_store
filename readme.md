@@ -8,11 +8,6 @@ This project was created as part of the LUT University – Rust Programming 2025
 
 ## How to use
 
-<!-- ### Live
-Try it here: <http://something.vercel.com>
-- Frontend deployed with `Vercel`
-- Backend deployed with `Render` -->
-
 ### Run Locally
 
 #### 1. Rename environment files

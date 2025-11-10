@@ -20,9 +20,6 @@ async fn get_products(
 ) -> Result<Json<Vec<Product>>, (StatusCode, Json<serde_json::Value>)> {
 	let response = match state.http_client
 		.get("https://fakestoreapi.com/products")
-		.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
-		.header("Accept", "application/json,text/html")
-		.header("Accept-Language", "en-US,en;q=0.9")
 		.send()
 		.await
 	{
@@ -36,75 +33,19 @@ async fn get_products(
   	}
 	};
 
-	// Get the raw text instead of parsing directly
-	let text = match response.text().await {
-		Ok(t) => t,
-		Err(e) => {
-			tracing::error!("Failed to get response text: {}", e);
-			return Err((
-				StatusCode::INTERNAL_SERVER_ERROR,
-				Json(json!({ "error": "Failed to read response" }))
-			));
-		}
-	};
+  let products = match response.json::<Vec<Product>>().await {
+    Ok(data) => data,
+    Err(e) => {
+      tracing::error!("Failed to parse products: {}", e);
+      return Err((
+        StatusCode::INTERNAL_SERVER_ERROR,
+        Json(json!({ "error": "Failed to parse products data" }))
+      ));
+    }
+  };
 
-	// Log the first 1000 characters (or however much you want)
-	tracing::info!("Raw response (first 1000 chars): {}",
-		&text.chars().take(1000).collect::<String>());
-
-	// Also log the total length
-	tracing::info!("Total response length: {} bytes", text.len());
-
-	// Now try to parse
-	let products: Vec<Product> = match serde_json::from_str(&text) {
-		Ok(data) => data,
-		Err(e) => {
-			tracing::error!("Failed to parse products: {}", e);
-			tracing::error!("Parse error at line {} column {}", e.line(), e.column());
-			// Log a bit more context around the error
-			tracing::error!("Response text: {}", &text.chars().take(2000).collect::<String>());
-			return Err((
-				StatusCode::INTERNAL_SERVER_ERROR,
-				Json(json!({ "error": format!("Failed to parse: {}", e) }))
-			));
-		}
-	};
-
-	tracing::info!("Successfully parsed {} products", products.len());
-	Ok(Json(products))
+  Ok(Json(products))
 }
-
-// async fn get_products(
-// 	State(state): State<AppState>
-// ) -> Result<Json<Vec<Product>>, (StatusCode, Json<serde_json::Value>)> {
-// 	let response = match state.http_client
-// 		.get("https://fakestoreapi.com/products")
-// 		.send()
-// 		.await
-// 	{
-//   	Ok(resp) => resp,
-//   	Err(e) => {
-//       tracing::error!("Failed to fetch products: {}", e);
-//       return Err((
-//         StatusCode::BAD_GATEWAY,
-//         Json(json!({ "error": "Failed to connect to products API" }))
-//       ));
-//   	}
-// 	};
-
-//   let products = match response.json::<Vec<Product>>().await {
-//     Ok(data) => data,
-//     Err(e) => {
-//       tracing::error!("Failed to parse products: {}", e);
-//       return Err((
-//         StatusCode::INTERNAL_SERVER_ERROR,
-//         Json(json!({ "error": "Failed to parse products data" }))
-//       ));
-//     }
-//   };
-
-//   Ok(Json(products))
-// }
 
 async fn get_product_by_id(
 	State(state): State<AppState>, Path(id): Path<u32>
