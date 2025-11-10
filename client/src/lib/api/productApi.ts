@@ -6,6 +6,7 @@ const API_URL =
     : process.env.NEXT_PUBLIC_DEPLOYMENT_URL;
 
 export const getProducts = async (): Promise<Product[]> => {
+  console.log("env", process.env.NODE_ENV);
   try {
     const response = await fetch(`${API_URL}/api/products`);
 
